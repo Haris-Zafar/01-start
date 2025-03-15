@@ -1,16 +1,18 @@
-const express = require('express')
-const dotenv = require('dotenv').config()
-const { errorHandler } = require('./middleware/errorMiddleware')
-const mongoose = require('mongoose')
+const express = require("express");
+const dotenv = require("dotenv").config();
+const { errorHandler } = require("./middleware/errorMiddleware");
+const colors = require("colors");
+const connectDB = require("./config/db");
 
-const port =  process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
+connectDB();
+
 const app = express();
-app.use(express.json())
-app.use(express.urlencoded({extended: false}))
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-app.use('/api/goals', require('./routes/goalRoutes'))
-app.use(errorHandler)
-
-mongoose.connect('mongodb://localhost:27017/');
+app.use("/api/goals", require("./routes/goalRoutes"));
+app.use("/api/users", require("./routes/userRoutes"));
+app.use(errorHandler);
 
 app.listen(port, () => console.log(`server is running on ${port}`));
